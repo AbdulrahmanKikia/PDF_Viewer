@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="styles/common.qss">../src/ui/styles/common.qss</file>
+        <file alias="styles/dark.qss">../src/ui/styles/dark.qss</file>
+        <file alias="styles/light.qss">../src/ui/styles/light.qss</file>
+        <file alias="icons/new.svg">icons/new.svg</file>
+        <file alias="icons/open.svg">icons/open.svg</file>
+        <file alias="icons/save.svg">icons/save.svg</file>
+        <file alias="icons/settings.svg">icons/settings.svg</file>
+        <file alias="icons/app.svg">icons/app.svg</file>
+    </qresource>
+</RCC>

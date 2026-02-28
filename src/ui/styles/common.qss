@@ -1,0 +1,142 @@
+/* ================================================================
+   PDFViewer — common.qss
+   Geometry, spacing, and border-radius ONLY.
+   NO font rules. NO color rules.
+
+   Font is set via QApplication::setFont() in theme.cpp so that
+   Qt never activates the QSS painting engine on QMainWindow or
+   QAbstractScrollArea, which would make the window's central area
+   go transparent on Windows.
+   ================================================================ */
+
+/* ---- Buttons ---- */
+QPushButton {
+    min-height: 24px;
+    padding: 5px 14px;
+    margin: 2px;
+    border-radius: 4px;
+}
+
+/* ---- Line edit ---- */
+QLineEdit {
+    min-height: 24px;
+    padding: 4px 10px;
+    margin: 2px;
+    border-radius: 4px;
+}
+
+/* ---- Combo box ---- */
+QComboBox {
+    min-height: 24px;
+    padding: 4px 10px;
+    margin: 2px;
+    border-radius: 4px;
+}
+
+/* ---- Tab bar ---- */
+QTabBar::tab {
+    padding: 7px 20px;
+    margin-right: 2px;
+    border-radius: 4px 4px 0 0;
+}
+
+/* ---- Status bar ---- */
+QStatusBar {
+    padding: 4px 8px;
+    min-height: 24px;
+}
+
+/* ---- Menu items ---- */
+QMenu::item {
+    padding: 6px 24px 6px 12px;
+}
+
+QMenu {
+    border-radius: 4px;
+}
+
+/* ---- Scroll bars (geometry only) ---- */
+QScrollBar:vertical {
+    width: 12px;
+    border-radius: 6px;
+    margin: 0;
+}
+
+QScrollBar::handle:vertical {
+    min-height: 30px;
+    border-radius: 6px;
+}
+
+QScrollBar:horizontal {
+    height: 12px;
+    border-radius: 6px;
+    margin: 0;
+}
+
+QScrollBar::handle:horizontal {
+    min-width: 30px;
+    border-radius: 6px;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    width: 0;
+    height: 0;
+    background: none;
+}
+
+/* ---- Slider (geometry only) ---- */
+QSlider::groove:horizontal {
+    height: 6px;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    width: 16px;
+    height: 16px;
+    margin: -5px 0;
+    border-radius: 8px;
+}
+
+/* ---- Check box / radio ---- */
+QCheckBox, QRadioButton {
+    spacing: 8px;
+}
+
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+}
+
+QRadioButton::indicator {
+    border-radius: 8px;
+}
+
+/* ---- Home page named widgets (geometry only) ---- */
+#LocationsSidebar {
+    border-right: 1px solid;
+}
+
+#HomeFileTree {
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+#HomeHeader {
+    padding-bottom: 8px;
+}
+
+#HomeTitle {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#LocationButton {
+    text-align: left;
+    padding: 8px 12px;
+}
+
+#AddLocationButton {
+    text-align: left;
+    padding: 6px 12px;
+}

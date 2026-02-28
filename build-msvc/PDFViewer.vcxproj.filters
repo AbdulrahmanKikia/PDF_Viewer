@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\mocs_compilation_Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\config\debuglog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\config\theme.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\config\sessionmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\config\recentfilesmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\config\thumbnailcache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\config\fileclipboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\config\settingsmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\tabmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\homepagewidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\locationssidebarwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\homecontentwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\recentfileswidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\advancedsearchdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\filepropertiesdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\settingsdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\pdftestwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\pdf\PdfViewerWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\pdf\PageCanvasView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\pdf\ThumbnailSidebarWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\ui\simplepdfwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\pdf\PdfRendererFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\pdf\PageRenderCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\pdf\PdfRenderService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\src\pdf\QtPdfRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\.qt\rcc\qrc_app_resources.cpp">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\3YJK5W5UP7_Debug\qrc_resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\mocs_compilation_Release.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\3YJK5W5UP7_Release\qrc_resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\mocs_compilation_MinSizeRel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\3YJK5W5UP7_MinSizeRel\qrc_resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\mocs_compilation_RelWithDebInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\PDFViewer_autogen\3YJK5W5UP7_RelWithDebInfo\qrc_resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\.qt\rcc\app_resources.qrc">
+      <Filter>Source Files\Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\resources\resources.qrc">
+      <Filter>Resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\CMakeFiles\287940eb45da9c13927122a1731a6c5f\qrc_app_resources.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-msvc\CMakeFiles\2148bdc0e681d20c86a139f09078f272\qrc_resources.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{08B0DC30-4592-3F01-839B-4F319A538ED7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{F3B8BAF8-D889-3414-BDE4-91ECACCF15CF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{A66FF9D6-6023-3D5F-B8D2-8212808CB020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Generated">
+      <UniqueIdentifier>{857C06B5-66EF-303E-98E9-9EFFE193EE0B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

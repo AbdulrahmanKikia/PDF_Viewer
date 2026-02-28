@@ -1,0 +1,280 @@
+/* ================================================================
+   PDFViewer — light.qss   (#f3f3f3 base, #000000 text)
+   Colors and borders only. Geometry lives in common.qss.
+   Font is set via QApplication::setFont() — NOT via QSS.
+   ================================================================ */
+
+/* ================================================================
+   CONTAINER BACKGROUNDS
+   WA_StyledBackground is set on QMainWindow in C++ so QStyleSheetStyle
+   actually paints this rule (it skips QMainWindow by default on Windows).
+   ================================================================ */
+QMainWindow {
+    background-color: #f3f3f3;
+    color: #000000;
+}
+
+QTabWidget#mainTabWidget {
+    background-color: #f3f3f3;
+    color: #000000;
+}
+
+QDialog, QMessageBox {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Named home-page containers */
+QWidget#HomePageWidget,
+QWidget#HomeContentWidget,
+QWidget#HomeHeader,
+QWidget#LocationsSidebar,
+QWidget#LocationsSidebarFrame,
+QWidget#HomeSplitter {
+    background-color: #f3f3f3;
+    color: #000000;
+}
+
+/* ================================================================
+   TAB WIDGET
+   ================================================================ */
+QTabWidget::pane {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+}
+
+QTabBar {
+    background-color: #f5f5f5;
+}
+
+QTabBar::tab {
+    background-color: #ebebeb;
+    color: #444444;
+    border: 1px solid #dddddd;
+    border-bottom: none;
+}
+
+QTabBar::tab:selected        { background-color: #ffffff; color: #000000; border-bottom: 2px solid #0078d4; }
+QTabBar::tab:hover:!selected { background-color: #e0e0e0; }
+QTabBar::close-button        { margin-left: 4px; }
+
+/* ================================================================
+   MENU BAR & MENUS
+   ================================================================ */
+QMenuBar {
+    background-color: #f5f5f5;
+    color: #000000;
+    border-bottom: 1px solid #dddddd;
+}
+
+QMenuBar::item             { background-color: transparent; color: #000000; }
+QMenuBar::item:selected    { background-color: #e0e0e0; }
+QMenuBar::item:pressed     { background-color: #d0d0d0; }
+
+QMenu {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #dddddd;
+}
+
+QMenu::item          { color: #000000; }
+QMenu::item:selected { background-color: #e8e8e8; color: #000000; }
+QMenu::item:disabled { color: #aaaaaa; }
+QMenu::separator     { height: 1px; background: #dddddd; margin: 4px 0; }
+
+/* ================================================================
+   TOOLBARS & TOOL BUTTONS
+   ================================================================ */
+QToolBar {
+    background-color: #f5f5f5;
+    border: none;
+    border-bottom: 1px solid #dddddd;
+    spacing: 4px;
+    padding: 4px;
+}
+
+QToolBar::separator {
+    width: 1px;
+    background-color: #dddddd;
+    margin: 4px 8px;
+}
+
+QToolButton {
+    background-color: transparent;
+    color: #333333;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    padding: 3px 6px;
+}
+
+QToolButton:hover   { background-color: #e0e0e0; border-color: #cccccc; }
+QToolButton:pressed { background-color: #d0d0d0; }
+QToolButton:checked { background-color: #0078d4; color: #ffffff; }
+
+/* ================================================================
+   STATUS BAR
+   ================================================================ */
+QStatusBar {
+    background-color: #f5f5f5;
+    color: #555555;
+    border-top: 1px solid #dddddd;
+}
+
+/* ================================================================
+   BUTTONS
+   ================================================================ */
+QPushButton {
+    background-color: #e8e8e8;
+    color: #000000;
+    border: 1px solid #cccccc;
+}
+
+QPushButton:hover    { background-color: #d8d8d8; border-color: #bbbbbb; }
+QPushButton:pressed  { background-color: #c8c8c8; }
+QPushButton:checked  { background-color: #0078d4; color: #ffffff; border-color: #005fa3; }
+QPushButton:disabled { background-color: #f0f0f0; color: #aaaaaa; border-color: #dddddd; }
+
+/* ================================================================
+   LABELS
+   ================================================================ */
+QLabel {
+    color: #000000;
+    background-color: transparent;
+}
+
+/* ================================================================
+   INPUT WIDGETS
+   ================================================================ */
+QLineEdit {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #cccccc;
+    selection-background-color: #0078d4;
+    selection-color: #ffffff;
+}
+
+QLineEdit:focus    { border-color: #0078d4; }
+QLineEdit:disabled { background-color: #f5f5f5; color: #aaaaaa; }
+
+QSpinBox, QDoubleSpinBox {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #cccccc;
+}
+
+QSpinBox:focus, QDoubleSpinBox:focus { border-color: #0078d4; }
+
+QComboBox {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #cccccc;
+}
+
+QComboBox:hover { border-color: #0078d4; }
+
+QComboBox::drop-down {
+    border: none;
+    background-color: transparent;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #cccccc;
+    selection-background-color: #0078d4;
+    selection-color: #ffffff;
+}
+
+/* ================================================================
+   LIST / TREE VIEWS
+   ================================================================ */
+QListView, QTreeView, QListWidget, QTreeWidget {
+    background-color: #ffffff;
+    alternate-background-color: #f9f9f9;
+    color: #000000;
+    border: 1px solid #dddddd;
+    outline: none;
+}
+
+QListView::item:selected, QTreeView::item:selected,
+QListWidget::item:selected, QTreeWidget::item:selected {
+    background-color: #0078d4;
+    color: #ffffff;
+}
+
+QListView::item:hover, QTreeView::item:hover,
+QListWidget::item:hover, QTreeWidget::item:hover {
+    background-color: #f0f0f0;
+}
+
+/* ================================================================
+   SCROLL BARS
+   ================================================================ */
+QScrollBar:vertical, QScrollBar:horizontal {
+    background-color: #f0f0f0;
+    border: none;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background-color: #c0c0c0;
+    border-radius: 6px;
+    min-height: 30px;
+    min-width: 30px;
+}
+
+QScrollBar::handle:vertical:hover,
+QScrollBar::handle:horizontal:hover { background-color: #a0a0a0; }
+
+/* ================================================================
+   SLIDER
+   ================================================================ */
+QSlider::groove:horizontal       { background-color: #dddddd; }
+QSlider::handle:horizontal       { background-color: #0078d4; border: none; }
+QSlider::handle:horizontal:hover { background-color: #1a8fe0; }
+
+/* ================================================================
+   CHECK BOX / RADIO
+   ================================================================ */
+QCheckBox, QRadioButton { color: #000000; background-color: transparent; }
+
+QCheckBox::indicator, QRadioButton::indicator {
+    border: 1px solid #bbbbbb;
+    background-color: #ffffff;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: #0078d4;
+    border-color: #0078d4;
+}
+
+QCheckBox::indicator:hover,
+QRadioButton::indicator:hover { border-color: #0078d4; }
+
+/* ================================================================
+   SPLITTER / GROUP BOX
+   ================================================================ */
+QSplitter::handle { background-color: #dddddd; }
+
+QGroupBox {
+    color: #000000;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+QGroupBox::title {
+    color: #000000;
+    subcontrol-origin: margin;
+    left: 8px;
+}
+
+/* ================================================================
+   HOME PAGE NAMED WIDGETS
+   ================================================================ */
+#LocationsSidebar  { background-color: #f5f5f5; border-right-color: #dddddd; }
+#HomeFileTree      { border-color: #dddddd; }
+#HomeHeader        { background-color: transparent; }
+#HomeTitle         { color: #000000; background-color: transparent; }
+#LocationButton    { color: #333333; background-color: transparent; }
+#AddLocationButton { color: #666666; background-color: transparent; }

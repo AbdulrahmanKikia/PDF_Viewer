@@ -1,0 +1,3 @@
+C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-msvc/CMakeFiles/PDFViewer.dir
+C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-msvc/CMakeFiles/ALL_BUILD.dir
+C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-msvc/CMakeFiles/ZERO_CHECK.dir

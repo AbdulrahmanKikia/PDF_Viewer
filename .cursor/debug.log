@@ -1,0 +1,18 @@
+{"hypothesisId":"H-1","location":"theme.cpp","message":"applyTheme entry","data":{"theme":1,"effective":"dark","styleName":"QFusionStyle"},"timestamp":1772166038330}
+{"hypothesisId":"H-1","location":"theme.cpp","message":"applyTheme done","data":{"sheetLen":11282,"palWindow":"#1e1e1e","palBase":"#2e2e2e","styleName":"QFusionStyle"},"timestamp":1772166038338}
+{"hypothesisId":"H-3","location":"mainwindow.cpp","message":"MainWindow ctor done post-fix","data":{"qssLen":11282,"styleName":"QStyleSheetStyle","palWindow":"#1e1e1e","palBase":"#2e2e2e","ownPalWindow":"#1e1e1e","autoFill":"false","styledBg":"true"},"timestamp":1772166039884}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"HomeContentWidget palette","data":{"window":"#1e1e1e","base":"#1e1e1e","text":"#dddddd","autoFill":false},"timestamp":1772166040507}
+{"hypothesisId":"H-C","location":"homecontentwidget.cpp","message":"HomeMainStack palette","data":{"window":"#1e1e1e","base":"#2e2e2e","autoFill":false},"timestamp":1772166040509}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"RecentFilesWidget palette","data":{"window":"#1e1e1e","base":"#2e2e2e","autoFill":false},"timestamp":1772166040510}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"child-widget","data":{"class":"QWidget","name":"HomeHeader","window":"#1e1e1e","base":"#1e1e1e","autoFill":false,"size":"950x48"},"timestamp":1772166040512}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"child-widget","data":{"class":"QStackedWidget","name":"HomeMainStack","window":"#1e1e1e","base":"#2e2e2e","autoFill":false,"size":"950x533"},"timestamp":1772166040513}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"child-widget","data":{"class":"QMenu","name":"","window":"#2a2a2a","base":"#2a2a2a","autoFill":false,"size":"100x30"},"timestamp":1772166040515}
+{"hypothesisId":"H-1","location":"theme.cpp","message":"applyTheme entry","data":{"theme":1,"effective":"dark","styleName":"QFusionStyle"},"timestamp":1772171515367}
+{"hypothesisId":"H-1","location":"theme.cpp","message":"applyTheme done","data":{"sheetLen":11282,"palWindow":"#1e1e1e","palBase":"#2e2e2e","styleName":"QFusionStyle"},"timestamp":1772171515380}
+{"hypothesisId":"H-3","location":"mainwindow.cpp","message":"MainWindow ctor done post-fix","data":{"qssLen":11282,"styleName":"QStyleSheetStyle","palWindow":"#1e1e1e","palBase":"#2e2e2e","ownPalWindow":"#1e1e1e","autoFill":"false","styledBg":"true"},"timestamp":1772171515967}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"HomeContentWidget palette","data":{"window":"#1e1e1e","base":"#1e1e1e","text":"#dddddd","autoFill":false},"timestamp":1772171516188}
+{"hypothesisId":"H-C","location":"homecontentwidget.cpp","message":"HomeMainStack palette","data":{"window":"#1e1e1e","base":"#2e2e2e","autoFill":false},"timestamp":1772171516188}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"RecentFilesWidget palette","data":{"window":"#1e1e1e","base":"#2e2e2e","autoFill":false},"timestamp":1772171516190}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"child-widget","data":{"class":"QWidget","name":"HomeHeader","window":"#1e1e1e","base":"#1e1e1e","autoFill":false,"size":"950x48"},"timestamp":1772171516190}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"child-widget","data":{"class":"QStackedWidget","name":"HomeMainStack","window":"#1e1e1e","base":"#2e2e2e","autoFill":false,"size":"950x533"},"timestamp":1772171516190}
+{"hypothesisId":"H-A","location":"homecontentwidget.cpp","message":"child-widget","data":{"class":"QMenu","name":"","window":"#2a2a2a","base":"#2a2a2a","autoFill":false,"size":"100x30"},"timestamp":1772171516190}
