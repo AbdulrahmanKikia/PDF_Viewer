@@ -8,5 +8,6 @@
         <file alias="icons/save.svg">icons/save.svg</file>
         <file alias="icons/settings.svg">icons/settings.svg</file>
         <file alias="icons/app.svg">icons/app.svg</file>
+        <file alias="icons/app_logo.png">icons/app_logo.png</file>
     </qresource>
 </RCC>

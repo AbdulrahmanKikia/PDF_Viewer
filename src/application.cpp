@@ -19,7 +19,7 @@ PDFViewerApp::PDFViewerApp(int &argc, char **argv)
     QApplication::setStyle(QStringLiteral("Fusion"));
 
     setApplicationName(QStringLiteral("PDFViewer"));
-    setApplicationVersion(QStringLiteral("1.0.0"));
+    setApplicationVersion(QStringLiteral("1.2.0"));
     setOrganizationName(QStringLiteral("PDFViewer"));
 
     // Theme is applied by MainWindow after CLI flags (--no-qss, --qss-debug)

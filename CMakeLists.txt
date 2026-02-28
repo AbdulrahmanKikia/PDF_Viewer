@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(PDFViewer VERSION 1.0.0 LANGUAGES CXX)
+project(PDFViewer VERSION 1.2.0 LANGUAGES CXX)
 
 # -----------------------------------------------------------------------------
 # C++ and Qt build setup
@@ -199,7 +199,10 @@ set(PDFVIEWER_UI_SOURCES
 )
 
 if(PDFVIEWER_USE_QTPDF)
-    list(APPEND PDFVIEWER_UI_SOURCES src/ui/simplepdfwindow.cpp)
+    list(APPEND PDFVIEWER_UI_SOURCES
+        src/ui/simplepdfwindow.cpp
+        src/ui/pdftabwidget.cpp
+    )
 endif()
 
 qt_add_executable(PDFViewer
@@ -278,6 +281,11 @@ qt_add_resources(PDFViewer "app_resources"
     FILES
         resources/resources.qrc
 )
+
+# Embed the application icon in the .exe so it shows in Explorer and pinned taskbar.
+if(WIN32)
+    target_sources(PDFViewer PRIVATE resources/app.rc)
+endif()
 
 # On Windows, suppress the console window for Release/RelWithDebInfo builds only.
 # Debug builds keep the console so that qDebug/qInfo/qWarning output and any
