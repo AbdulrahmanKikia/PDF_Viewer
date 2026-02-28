@@ -1,0 +1,42 @@
+# Build output directories
+build-msvc/
+build-simple/
+build-test/
+build/
+out/
+
+# Visual Studio
+.vs/
+
+# Cursor IDE
+.cursor/
+
+# Compiled binaries and objects
+*.exe
+*.obj
+*.o
+*.a
+*.lib
+*.pdb
+*.ilk
+*.exp
+*.dll
+
+# CMake generated
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*_autogen/
+
+# Qt generated
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
