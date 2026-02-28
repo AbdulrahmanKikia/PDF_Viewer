@@ -1,12 +1,14 @@
 # PDFViewer
 
-A lightweight, native PDF viewer built with **C++17** and **Qt 6**. Uses Qt's built-in PDF module for rendering -- no external dependencies required beyond Qt itself.
+A lightweight, cross-platform PDF viewer built with **C++17** and **Qt 6**. Uses Qt's built-in PDF module for rendering -- no external dependencies required beyond Qt itself.
+
+Works on **Windows**, **macOS**, and **Linux**.
 
 ## Features
 
 - **Fast PDF rendering** via QtPdf (Chromium-based engine shipped with Qt)
 - **Smooth scrolling** in continuous multi-page mode
-- **Ctrl+scroll zoom** (trackpad / mouse wheel), plus toolbar buttons for Zoom In, Zoom Out, Fit Width, Fit Page, and Reset
+- **Pinch-to-zoom** on trackpad, Ctrl+scroll on mouse, plus toolbar buttons for Zoom In, Zoom Out, Fit Width, Fit Page, and Reset
 - **Table of Contents** sidebar with single-click navigation
 - **Text search** with Next / Previous result highlighting
 - **Page navigation** via Prev/Next buttons, page number spinbox, or scrolling
@@ -24,18 +26,36 @@ A lightweight, native PDF viewer built with **C++17** and **Qt 6**. Uses Qt's bu
 | Qt | 6.5+ (tested with 6.10.2) |
 | Qt modules | Core, Gui, Widgets, Concurrent, Pdf, PdfWidgets |
 | CMake | 3.20+ |
-| Compiler | MSVC 2022 / 2019 (Windows) or GCC / Clang with C++17 support |
+| Compiler | MSVC 2022/2019 (Windows), Clang (macOS), or GCC/Clang (Linux) |
 
-### Installing Qt PDF
+### Installing Qt and Qt PDF
 
-Qt PDF is an optional module. Install it via **Qt Maintenance Tool**:
+**Option A -- Qt Installer (all platforms)**
 
-1. Open Qt Maintenance Tool
-2. Select **Add or remove components**
-3. Under your Qt version (e.g. Qt 6.10.2), expand **Additional Libraries**
-4. Check **Qt PDF** and complete the installation
+1. Download the [Qt Online Installer](https://www.qt.io/download-qt-installer)
+2. Install Qt 6.5+ for your platform (e.g. `macOS`, `MSVC 2022 64-bit`, or `Desktop gcc 64-bit`)
+3. Under **Additional Libraries**, check **Qt PDF**
 
-Run `check_qt6_pdf.bat` (Windows) to verify the module is detected.
+On Windows, run `check_qt6_pdf.bat` to verify the module is detected.
+
+**Option B -- Homebrew (macOS only)**
+
+```bash
+brew install qt
+```
+
+> Note: The Homebrew Qt formula may not include the PDF module. If CMake reports
+> `Qt6::Pdf not found`, use Option A instead.
+
+**Option C -- System package manager (Linux)**
+
+```bash
+# Ubuntu / Debian
+sudo apt install qt6-base-dev qt6-pdf-dev libqt6pdfwidgets6
+
+# Fedora
+sudo dnf install qt6-qtbase-devel qt6-qtpdf-devel
+```
 
 ## Building
 
@@ -51,21 +71,41 @@ This automatically sets up the MSVC environment, configures CMake, and builds a 
 build-msvc\Release\PDFViewer.exe
 ```
 
-### Manual build
+### macOS
 
 ```bash
-# Configure
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64 \
-  -DCMAKE_PREFIX_PATH="C:/Qt/6.10.2/msvc2022_64"
+# Configure (adjust the path to match your Qt installation)
+cmake -S . -B build -DCMAKE_PREFIX_PATH=~/Qt/6.10.2/macos
 
 # Build
 cmake --build build --config Release --parallel
+
+# Run
+./build/PDFViewer.app/Contents/MacOS/PDFViewer
+# or, if built as a plain binary:
+./build/PDFViewer
 ```
 
-### Linux / macOS
+If you installed Qt via Homebrew:
+
+```bash
+cmake -S . -B build -DCMAKE_PREFIX_PATH="$(brew --prefix qt)"
+cmake --build build --config Release --parallel
+```
+
+### Linux
 
 ```bash
 cmake -S . -B build -DCMAKE_PREFIX_PATH=/path/to/Qt/6.x.x/gcc_64
+cmake --build build --config Release --parallel
+./build/PDFViewer
+```
+
+### Windows (manual)
+
+```bash
+cmake -S . -B build -G "Visual Studio 17 2022" -A x64 ^
+  -DCMAKE_PREFIX_PATH="C:/Qt/6.10.2/msvc2022_64"
 cmake --build build --config Release --parallel
 ```
 
