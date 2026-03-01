@@ -1,5 +1,4 @@
 #include "application.h"
-#include "config/theme.h"
 #include "config/debuglog.h"
 
 #ifdef PDFVIEWER_USE_QTPDF
@@ -41,9 +40,6 @@ int main(int argc, char *argv[])
     qInfo() << "=== PDFViewer starting ===";
     qInfo() << "Qt       :" << qVersion();
     qInfo() << "Platform :" << app.platformName();
-
-    // Apply default theme (dark) up front.
-    ThemeManager::instance()->applyTheme(ThemeManager::Dark);
 
 #ifdef PDFVIEWER_USE_QTPDF
     SimplePdfWindow w;

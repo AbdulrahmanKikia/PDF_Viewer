@@ -14,6 +14,7 @@ class QLabel;
 class QTabWidget;
 
 class PdfTabWidget;
+class HomePageWidget;
 
 class SimplePdfWindow : public QMainWindow
 {
@@ -71,18 +72,34 @@ private slots:
     void populateRecentFilesMenu();
     void showTabContextMenu(const QPoint &pos);
 
+    void showSettings();
+    void printDocument();
+
 private:
     void createUi();
     void createMenuBar();
 
-    PdfTabWidget *currentTab() const;
+    void applySettingsToApp();
+
+    PdfTabWidget    *currentTab()  const;
+    HomePageWidget  *openHomeTab();
+    HomePageWidget  *homeTab() const;
+    bool             isHomeTab(int index) const;
+
     PdfTabWidget *openInNewTab(const QString &filePath = QString());
+    /** Opens a PDF respecting General tab open behavior (new / replace / ask). */
+    void openFileWithTabBehavior(const QString &filePath);
     void updateTabTitle(int index);
     void syncUiToCurrentTab();
     void updateWindowTitle();
     void updatePageControls();
     void updateStatusLabel();
     void installTabEventFilter(PdfTabWidget *tab);
+
+    /** Schedules a jump to \a page after the next event loop run (after Qt's layout update from zoom). */
+    void scheduleZoomAnchorJump(PdfTabWidget *tab, int page);
+    /** Zooms to \a newZoom keeping the current viewport center fixed (for zoom in/out and Ctrl+wheel). */
+    void zoomAnchoredToViewportCenter(PdfTabWidget *tab, double newZoom);
 
     void saveWindowGeometry();
     void restoreWindowGeometry();
@@ -96,13 +113,14 @@ private:
     QLabel    *m_pageCountLabel = nullptr;
     QLabel    *m_statusLabel    = nullptr;
 
-    QMenu *m_recentFilesMenu = nullptr;
-
+    QMenu   *m_recentFilesMenu = nullptr;
     QAction *m_darkModeAction  = nullptr;
     QAction *m_lightModeAction = nullptr;
     QAction *m_navPaneAction   = nullptr;
+    QAction *m_printAct        = nullptr;
 
-    bool m_isFullScreen = false;
+    HomePageWidget *m_homeTab    = nullptr;
+    bool            m_isFullScreen = false;
 };
 
 #endif // SIMPLEPDFWINDOW_H

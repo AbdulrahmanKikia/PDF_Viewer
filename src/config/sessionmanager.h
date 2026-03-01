@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QJsonDocument>
+#include <QJsonArray>
 
 struct TabSessionData {
     QString type;           // "home" or "pdf"

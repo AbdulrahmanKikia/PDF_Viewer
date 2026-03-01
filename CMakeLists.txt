@@ -61,7 +61,7 @@ endif()
 # Qt6: required + optional modules
 # -----------------------------------------------------------------------------
 find_package(Qt6 6.10.2 REQUIRED COMPONENTS Core Gui Widgets Concurrent)
-find_package(Qt6 6.10.2 QUIET COMPONENTS Svg Pdf PdfWidgets)
+find_package(Qt6 6.10.2 QUIET COMPONENTS Svg Pdf PdfWidgets PrintSupport)
 
 # -----------------------------------------------------------------------------
 # Qt6 Pdf / PdfWidgets (optional): used for QtPdfRenderer and SimplePdfWindow
@@ -239,6 +239,14 @@ if(TARGET Qt6::Svg)
     message(STATUS "Qt6 Svg (toolbar icons): enabled")
 else()
     message(STATUS "Qt6 Svg (toolbar icons): not found (optional)")
+endif()
+
+if(TARGET Qt6::PrintSupport)
+    target_link_libraries(PDFViewer PRIVATE Qt6::PrintSupport)
+    target_compile_definitions(PDFViewer PRIVATE PDFVIEWER_HAS_PRINT)
+    message(STATUS "Qt6 PrintSupport: enabled")
+else()
+    message(STATUS "Qt6 PrintSupport: not found (optional) — print will be disabled")
 endif()
 
 if(PDFVIEWER_USE_QTPDF)

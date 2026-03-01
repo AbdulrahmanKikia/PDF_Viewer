@@ -1,8 +1,18 @@
 #include "simplepdfwindow.h"
 #include "pdftabwidget.h"
+#include "homepagewidget.h"
+#include "settingsdialog.h"
 #include "config/recentfilesmanager.h"
 #include "config/sessionmanager.h"
+#include "config/settingsmanager.h"
 #include "config/theme.h"
+
+#ifdef PDFVIEWER_HAS_PRINT
+#  include <QPrinter>
+#  include <QPrintDialog>
+#  include <QPainter>
+#endif
+
 
 #include <QPdfDocument>
 #include <QPdfLink>
@@ -20,20 +30,26 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
+#include <QFile>
 #include <QFileInfo>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QMimeData>
+#include <QMetaObject>
 #include <QModelIndex>
 #include <QPointF>
 #include <QProcess>
 #include <QSettings>
+#include <QScrollBar>
 #include <QSpinBox>
 #include <QStatusBar>
 #include <QTabBar>
 #include <QTabWidget>
+#include <QTimer>
+#include <QPointer>
 #include <QToolBar>
 #include <QTreeView>
 #include <QUrl>
@@ -47,7 +63,15 @@ SimplePdfWindow::SimplePdfWindow(QWidget *parent)
     createUi();
     createMenuBar();
     restoreWindowGeometry();
-    restoreSession();
+
+    // Load persisted settings and apply them (theme, thumbnails, etc.)
+    // before session restore so new tabs inherit correct defaults.
+    SettingsManager::instance()->load();
+    applySettingsToApp();
+
+    openHomeTab();
+    if (SettingsManager::instance()->current().general.reopenTabsOnStartup)
+        restoreSession();
 }
 
 // ---------------------------------------------------------------------------
@@ -57,7 +81,7 @@ SimplePdfWindow::SimplePdfWindow(QWidget *parent)
 void SimplePdfWindow::openFilePath(const QString &filePath)
 {
     if (!filePath.isEmpty())
-        openInNewTab(filePath);
+        openFileWithTabBehavior(filePath);
 }
 
 // ---------------------------------------------------------------------------
@@ -67,6 +91,18 @@ void SimplePdfWindow::openFilePath(const QString &filePath)
 PdfTabWidget *SimplePdfWindow::currentTab() const
 {
     return qobject_cast<PdfTabWidget *>(m_tabWidget->currentWidget());
+}
+
+bool SimplePdfWindow::isHomeTab(int index) const
+{
+    if (index < 0 || index >= m_tabWidget->count())
+        return false;
+    return m_tabWidget->widget(index) == m_homeTab;
+}
+
+HomePageWidget *SimplePdfWindow::homeTab() const
+{
+    return m_homeTab;
 }
 
 PdfTabWidget *SimplePdfWindow::openInNewTab(const QString &filePath)
@@ -128,8 +164,96 @@ PdfTabWidget *SimplePdfWindow::openInNewTab(const QString &filePath)
         }
     }
 
+    // Apply default zoom from settings so new tabs respect viewing/defaultZoom.
+    const QString defaultZoom = SettingsManager::instance()->current().viewing.defaultZoom;
+    if (tab->view()) {
+        if (defaultZoom == QLatin1String("fit-width"))
+            tab->view()->setZoomMode(QPdfView::ZoomMode::FitToWidth);
+        else if (defaultZoom == QLatin1String("fit-page"))
+            tab->view()->setZoomMode(QPdfView::ZoomMode::FitInView);
+        else {
+            bool ok = false;
+            const int pct = defaultZoom.toInt(&ok);
+            if (ok && pct > 0) {
+                tab->view()->setZoomMode(QPdfView::ZoomMode::Custom);
+                tab->view()->setZoomFactor(qBound(0.1, pct / 100.0, 10.0));
+            }
+        }
+    }
+
     m_tabWidget->setCurrentIndex(idx);
     return tab;
+}
+
+void SimplePdfWindow::openFileWithTabBehavior(const QString &filePath)
+{
+    const QString behavior = SettingsManager::instance()->current().general.tabOpenBehavior;
+    PdfTabWidget *tab = currentTab();
+
+    if (behavior == QLatin1String("new")) {
+        openInNewTab(filePath);
+        return;
+    }
+
+    if (behavior == QLatin1String("replace")) {
+        if (tab && tab->loadFile(filePath)) {
+            updateTabTitle(m_tabWidget->currentIndex());
+            updatePageControls();
+            updateStatusLabel();
+            RecentFilesManager::instance()->addFile(filePath);
+        } else {
+            openInNewTab(filePath);
+        }
+        return;
+    }
+
+    if (behavior == QLatin1String("ask")) {
+        QMessageBox msg(this);
+        msg.setWindowTitle(tr("Open PDF"));
+        msg.setText(tr("How would you like to open \"%1\"?")
+                        .arg(QFileInfo(filePath).fileName()));
+        QPushButton *newTabBtn = msg.addButton(tr("Open in new tab"), QMessageBox::ActionRole);
+        QPushButton *replaceBtn = nullptr;
+        if (tab)
+            replaceBtn = msg.addButton(tr("Replace current tab"), QMessageBox::ActionRole);
+        msg.addButton(tr("Cancel"), QMessageBox::RejectRole);
+        msg.exec();
+
+        if (replaceBtn && msg.clickedButton() == replaceBtn) {
+            if (tab->loadFile(filePath)) {
+                updateTabTitle(m_tabWidget->currentIndex());
+                updatePageControls();
+                updateStatusLabel();
+                RecentFilesManager::instance()->addFile(filePath);
+            } else {
+                openInNewTab(filePath);
+            }
+        } else if (msg.clickedButton() == newTabBtn) {
+            openInNewTab(filePath);
+        }
+        return;
+    }
+
+    openInNewTab(filePath);
+}
+
+HomePageWidget *SimplePdfWindow::openHomeTab()
+{
+    if (m_homeTab)
+        return m_homeTab;
+
+    m_homeTab = new HomePageWidget(m_tabWidget);
+    connect(m_homeTab, &HomePageWidget::openFileRequested,
+            this, &SimplePdfWindow::openFilePath);
+
+    const int idx = m_tabWidget->insertTab(0, m_homeTab, tr("Home"));
+    m_tabWidget->setTabToolTip(idx, tr("Home — recent files and file browser"));
+
+    // Hide the close button on the home tab so it cannot be closed accidentally.
+    m_tabWidget->tabBar()->setTabButton(idx, QTabBar::RightSide, nullptr);
+    m_tabWidget->tabBar()->setTabButton(idx, QTabBar::LeftSide, nullptr);
+
+    return m_homeTab;
 }
 
 void SimplePdfWindow::updateTabTitle(int index)
@@ -273,9 +397,15 @@ void SimplePdfWindow::createMenuBar()
 
     fileMenu->addSeparator();
 
-    QAction *printAct = fileMenu->addAction(tr("&Print..."));
-    printAct->setShortcut(QKeySequence::Print);
-    printAct->setEnabled(false);
+    m_printAct = fileMenu->addAction(tr("&Print..."));
+    m_printAct->setShortcut(QKeySequence::Print);
+#ifdef PDFVIEWER_HAS_PRINT
+    m_printAct->setEnabled(false);   // enabled dynamically when a document is open
+    connect(m_printAct, &QAction::triggered, this, &SimplePdfWindow::printDocument);
+#else
+    m_printAct->setEnabled(false);
+    m_printAct->setToolTip(tr("Print support not available in this build"));
+#endif
 
     fileMenu->addSeparator();
 
@@ -323,7 +453,7 @@ void SimplePdfWindow::createMenuBar()
 
     QAction *prefsAct = editMenu->addAction(tr("&Preferences"));
     prefsAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Comma));
-    prefsAct->setEnabled(false);
+    connect(prefsAct, &QAction::triggered, this, &SimplePdfWindow::showSettings);
 
     // ── View ──
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
@@ -389,20 +519,6 @@ void SimplePdfWindow::createMenuBar()
     // ── Tools ──
     QMenu *toolsMenu = menuBar()->addMenu(tr("&Tools"));
 
-    QMenu *annotMenu = toolsMenu->addMenu(tr("&Annotations"));
-    QAction *addCommentAct = annotMenu->addAction(tr("Add &Comment"));
-    addCommentAct->setEnabled(false);
-    QAction *highlightAct = annotMenu->addAction(tr("&Highlight"));
-    highlightAct->setEnabled(false);
-    QAction *underlineAct = annotMenu->addAction(tr("&Underline"));
-    underlineAct->setEnabled(false);
-    QAction *drawAct = annotMenu->addAction(tr("&Draw"));
-    drawAct->setEnabled(false);
-    QAction *eraseAct = annotMenu->addAction(tr("&Erase"));
-    eraseAct->setEnabled(false);
-
-    toolsMenu->addSeparator();
-
     QAction *ocrAct = toolsMenu->addAction(tr("Text &Recognition"));
     ocrAct->setEnabled(false);
     QAction *extractAct = toolsMenu->addAction(tr("&Extract Text"));
@@ -420,28 +536,6 @@ void SimplePdfWindow::createMenuBar()
 
     QAction *showFolderAct = fileMgmtMenu->addAction(tr("&Show in Folder"));
     connect(showFolderAct, &QAction::triggered, this, &SimplePdfWindow::showInFolder);
-
-    // ── Signature ──
-    QMenu *sigMenu = menuBar()->addMenu(tr("&Signature"));
-
-    QAction *signAct = sigMenu->addAction(tr("&Sign Document"));
-    signAct->setEnabled(false);
-    QAction *addFieldAct = sigMenu->addAction(tr("&Add Signature Field"));
-    addFieldAct->setEnabled(false);
-
-    sigMenu->addSeparator();
-
-    QAction *verifyAct = sigMenu->addAction(tr("&Verify Signatures"));
-    verifyAct->setEnabled(false);
-    QAction *removeSigAct = sigMenu->addAction(tr("&Remove Signature"));
-    removeSigAct->setEnabled(false);
-
-    sigMenu->addSeparator();
-
-    QAction *certMgrAct = sigMenu->addAction(tr("&Certificate Manager"));
-    certMgrAct->setEnabled(false);
-    QAction *digitalIdAct = sigMenu->addAction(tr("&Digital ID"));
-    digitalIdAct->setEnabled(false);
 
     // ── Help ──
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -527,15 +621,11 @@ void SimplePdfWindow::closeTab(int index)
 {
     if (index < 0 || index >= m_tabWidget->count())
         return;
-    if (m_tabWidget->count() <= 1) {
-        auto *tab = qobject_cast<PdfTabWidget *>(m_tabWidget->widget(0));
-        if (tab && tab->hasDocument()) {
-            m_tabWidget->removeTab(0);
-            delete tab;
-            openInNewTab();
-        }
+
+    // The home tab is permanent — it cannot be closed.
+    if (isHomeTab(index))
         return;
-    }
+
     QWidget *w = m_tabWidget->widget(index);
     m_tabWidget->removeTab(index);
     delete w;
@@ -572,11 +662,14 @@ void SimplePdfWindow::syncUiToCurrentTab()
 {
     PdfTabWidget *tab = currentTab();
     if (!tab) {
+        // Home tab or empty state — reset toolbar controls.
         setWindowTitle(tr("PDFViewer"));
         m_pageCountLabel->setText(QStringLiteral("/ 0"));
         m_pageSpin->setMaximum(1);
         m_pageSpin->setValue(1);
         m_statusLabel->setText(tr("Ready"));
+        if (m_printAct)
+            m_printAct->setEnabled(false);
         return;
     }
 
@@ -592,6 +685,11 @@ void SimplePdfWindow::syncUiToCurrentTab()
         QSignalBlocker blocker(m_searchEdit);
         m_searchEdit->setText(tabSearch);
     }
+
+#ifdef PDFVIEWER_HAS_PRINT
+    if (m_printAct)
+        m_printAct->setEnabled(tab->hasDocument());
+#endif
 }
 
 // ---------------------------------------------------------------------------
@@ -606,7 +704,10 @@ void SimplePdfWindow::showTabContextMenu(const QPoint &pos)
 
     QMenu menu(this);
 
+    const bool thisIsHome = isHomeTab(tabIndex);
+
     QAction *closeAct = menu.addAction(tr("Close Tab"));
+    closeAct->setEnabled(!thisIsHome);
     connect(closeAct, &QAction::triggered, this, [this, tabIndex]() {
         closeTab(tabIndex);
     });
@@ -615,7 +716,7 @@ void SimplePdfWindow::showTabContextMenu(const QPoint &pos)
     closeOthersAct->setEnabled(m_tabWidget->count() > 1);
     connect(closeOthersAct, &QAction::triggered, this, [this, tabIndex]() {
         for (int i = m_tabWidget->count() - 1; i >= 0; --i) {
-            if (i != tabIndex) {
+            if (i != tabIndex && !isHomeTab(i)) {
                 QWidget *w = m_tabWidget->widget(i);
                 m_tabWidget->removeTab(i);
                 delete w;
@@ -627,9 +728,11 @@ void SimplePdfWindow::showTabContextMenu(const QPoint &pos)
     closeRightAct->setEnabled(tabIndex < m_tabWidget->count() - 1);
     connect(closeRightAct, &QAction::triggered, this, [this, tabIndex]() {
         for (int i = m_tabWidget->count() - 1; i > tabIndex; --i) {
-            QWidget *w = m_tabWidget->widget(i);
-            m_tabWidget->removeTab(i);
-            delete w;
+            if (!isHomeTab(i)) {
+                QWidget *w = m_tabWidget->widget(i);
+                m_tabWidget->removeTab(i);
+                delete w;
+            }
         }
     });
 
@@ -663,7 +766,7 @@ void SimplePdfWindow::openFile()
         this, tr("Open PDF File"), QString(), tr("PDF Files (*.pdf)"));
     if (filePath.isEmpty())
         return;
-    openInNewTab(filePath);
+    openFileWithTabBehavior(filePath);
 }
 
 // ---------------------------------------------------------------------------
@@ -737,23 +840,25 @@ void SimplePdfWindow::zoomIn()
 {
     PdfTabWidget *tab = currentTab();
     if (!tab) return;
-    tab->view()->setZoomMode(QPdfView::ZoomMode::Custom);
-    tab->view()->setZoomFactor(tab->view()->zoomFactor() * 1.25);
+    const double newZoom = qBound(0.1, tab->view()->zoomFactor() * 1.25, 10.0);
+    zoomAnchoredToViewportCenter(tab, newZoom);
 }
 
 void SimplePdfWindow::zoomOut()
 {
     PdfTabWidget *tab = currentTab();
     if (!tab) return;
-    tab->view()->setZoomMode(QPdfView::ZoomMode::Custom);
-    tab->view()->setZoomFactor(tab->view()->zoomFactor() / 1.25);
+    const double newZoom = qBound(0.1, tab->view()->zoomFactor() / 1.25, 10.0);
+    zoomAnchoredToViewportCenter(tab, newZoom);
 }
 
 void SimplePdfWindow::fitWidth()
 {
     PdfTabWidget *tab = currentTab();
     if (!tab) return;
+    const int savedPage = tab->navigator()->currentPage();
     tab->view()->setZoomMode(QPdfView::ZoomMode::FitToWidth);
+    scheduleZoomAnchorJump(tab, savedPage);
     updateStatusLabel();
 }
 
@@ -761,7 +866,9 @@ void SimplePdfWindow::fitPage()
 {
     PdfTabWidget *tab = currentTab();
     if (!tab) return;
+    const int savedPage = tab->navigator()->currentPage();
     tab->view()->setZoomMode(QPdfView::ZoomMode::FitInView);
+    scheduleZoomAnchorJump(tab, savedPage);
     updateStatusLabel();
 }
 
@@ -769,9 +876,60 @@ void SimplePdfWindow::resetZoom()
 {
     PdfTabWidget *tab = currentTab();
     if (!tab) return;
+    const int savedPage = tab->navigator()->currentPage();
     tab->view()->setZoomMode(QPdfView::ZoomMode::Custom);
     tab->view()->setZoomFactor(1.0);
+    scheduleZoomAnchorJump(tab, savedPage);
     updateStatusLabel();
+}
+
+void SimplePdfWindow::scheduleZoomAnchorJump(PdfTabWidget *tab, int page)
+{
+    if (!tab || !tab->navigator())
+        return;
+    QPointer<PdfTabWidget> p(tab);
+    QTimer::singleShot(0, this, [p, page]() {
+        if (p && p->navigator())
+            p->navigator()->jump(page, QPointF(), 0);
+    });
+}
+
+void SimplePdfWindow::zoomAnchoredToViewportCenter(PdfTabWidget *tab, double newZoom)
+{
+    if (!tab || !tab->view())
+        return;
+    QPdfView *v = tab->view();
+    const double oldZoom = v->zoomFactor();
+    if (oldZoom <= 0)
+        return;
+
+    // Viewport center in content coordinates (SinglePage mode: one page, so this scales with zoom)
+    QPoint center = v->viewport()->rect().center();
+    const double centerContentX = v->horizontalScrollBar()->value() + center.x();
+    const double centerContentY = v->verticalScrollBar()->value() + center.y();
+    const double zoomRatio = newZoom / oldZoom;
+    const int targetScrollX = qRound(centerContentX * zoomRatio - center.x());
+    const int targetScrollY = qRound(centerContentY * zoomRatio - center.y());
+
+    v->setZoomMode(QPdfView::ZoomMode::Custom);
+    v->setZoomFactor(newZoom);
+
+    QPointer<QPdfView> pView(v);
+    auto *connection = new QMetaObject::Connection;
+    *connection = connect(v, &QPdfView::zoomFactorChanged, this, [connection, pView, targetScrollX, targetScrollY]() {
+        disconnect(*connection);
+        delete connection;
+        if (!pView)
+            return;
+        QTimer::singleShot(0, pView, [pView, targetScrollX, targetScrollY]() {
+            if (!pView)
+                return;
+            QScrollBar *hBar = pView->horizontalScrollBar();
+            QScrollBar *vBar = pView->verticalScrollBar();
+            hBar->setValue(qBound(0, targetScrollX, hBar->maximum()));
+            vBar->setValue(qBound(0, targetScrollY, vBar->maximum()));
+        });
+    });
 }
 
 // ---------------------------------------------------------------------------
@@ -973,7 +1131,7 @@ void SimplePdfWindow::populateRecentFilesMenu()
         QAction *act = m_recentFilesMenu->addAction(entry.displayName);
         act->setToolTip(entry.filePath);
         connect(act, &QAction::triggered, this, [this, path = entry.filePath]() {
-            openInNewTab(path);
+            openFileWithTabBehavior(path);
         });
     }
 
@@ -1075,6 +1233,13 @@ void SimplePdfWindow::saveSession()
 {
     QList<TabSessionData> tabs;
     for (int i = 0; i < m_tabWidget->count(); ++i) {
+        if (isHomeTab(i)) {
+            TabSessionData data;
+            data.type = QStringLiteral("home");
+            data.isActive = (i == m_tabWidget->currentIndex());
+            tabs.append(data);
+            continue;
+        }
         auto *tab = qobject_cast<PdfTabWidget *>(m_tabWidget->widget(i));
         if (!tab)
             continue;
@@ -1098,6 +1263,10 @@ void SimplePdfWindow::restoreSession()
 
     bool anyRestored = false;
     for (const TabSessionData &data : std::as_const(tabs)) {
+        // Home tab entries are satisfied by the permanent home tab already open.
+        if (data.type == QLatin1String("home"))
+            continue;
+
         if (data.filePath.isEmpty())
             continue;
         if (!QFileInfo::exists(data.filePath))
@@ -1110,19 +1279,22 @@ void SimplePdfWindow::restoreSession()
         anyRestored = true;
 
         if (data.currentPage > 0 && tab->navigator() &&
-            data.currentPage < tab->document()->pageCount()) {
-            tab->navigator()->jump(data.currentPage, QPointF(), 0);
+            data.currentPage <= tab->document()->pageCount()) {
+            tab->navigator()->jump(data.currentPage - 1, QPointF(), 0);
         }
 
         const double factor = static_cast<double>(data.zoomLevel) / 100.0;
         if (factor > 0.0 && factor != 1.0) {
+            const int pageToAnchor = tab->navigator() ? tab->navigator()->currentPage() : 0;
             tab->view()->setZoomMode(QPdfView::ZoomMode::Custom);
             tab->view()->setZoomFactor(factor);
+            scheduleZoomAnchorJump(tab, pageToAnchor);
         }
     }
 
     if (!anyRestored) {
-        openInNewTab();
+        // No PDF tabs restored — show the home tab (already open at index 0).
+        m_tabWidget->setCurrentIndex(0);
     } else if (activeIndex >= 0 && activeIndex < m_tabWidget->count()) {
         m_tabWidget->setCurrentIndex(activeIndex);
     }
@@ -1149,10 +1321,9 @@ bool SimplePdfWindow::eventFilter(QObject *obj, QEvent *event)
             if (delta == 0)
                 return QMainWindow::eventFilter(obj, event);
 
-            tab->view()->setZoomMode(QPdfView::ZoomMode::Custom);
             const double factor = (delta > 0) ? 1.1 : (1.0 / 1.1);
             const double newZoom = qBound(0.1, tab->view()->zoomFactor() * factor, 10.0);
-            tab->view()->setZoomFactor(newZoom);
+            zoomAnchoredToViewportCenter(tab, newZoom);
             return true;
         }
     }
@@ -1180,8 +1351,130 @@ void SimplePdfWindow::dropEvent(QDropEvent *event)
     for (const QUrl &url : mime->urls()) {
         const QString path = url.toLocalFile();
         if (path.endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive)) {
-            openInNewTab(path);
+            openFileWithTabBehavior(path);
         }
     }
     event->acceptProposedAction();
+}
+
+// ---------------------------------------------------------------------------
+// Settings
+// ---------------------------------------------------------------------------
+
+void SimplePdfWindow::showSettings()
+{
+    SettingsDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted)
+        applySettingsToApp();
+}
+
+void SimplePdfWindow::applySettingsToApp()
+{
+    const AppSettings s = SettingsManager::instance()->current();
+
+    // Apply theme.
+    const QString &themeName = s.appearance.theme;
+    ThemeManager::Theme theme = ThemeManager::Dark;
+    if (themeName == QLatin1String("light"))
+        theme = ThemeManager::Light;
+    else if (themeName == QLatin1String("system"))
+        theme = ThemeManager::System;
+    ThemeManager::instance()->applyTheme(theme);
+
+    // Keep the View menu theme toggles in sync.
+    if (m_darkModeAction && m_lightModeAction) {
+        m_darkModeAction->setChecked(theme == ThemeManager::Dark);
+        m_lightModeAction->setChecked(theme == ThemeManager::Light);
+    }
+
+    // Apply TOC (thumbnail sidebar) visibility and default zoom to all open PDF tabs.
+    const QString &defaultZoom = s.viewing.defaultZoom;
+    for (int i = 0; i < m_tabWidget->count(); ++i) {
+        auto *tab = qobject_cast<PdfTabWidget *>(m_tabWidget->widget(i));
+        if (tab) {
+            tab->setTocVisible(s.viewing.showThumbnails);
+            if (tab->view()) {
+                if (defaultZoom == QLatin1String("fit-width"))
+                    tab->view()->setZoomMode(QPdfView::ZoomMode::FitToWidth);
+                else if (defaultZoom == QLatin1String("fit-page"))
+                    tab->view()->setZoomMode(QPdfView::ZoomMode::FitInView);
+                else {
+                    bool ok = false;
+                    const int pct = defaultZoom.toInt(&ok);
+                    if (ok && pct > 0) {
+                        tab->view()->setZoomMode(QPdfView::ZoomMode::Custom);
+                        tab->view()->setZoomFactor(qBound(0.1, pct / 100.0, 10.0));
+                    }
+                }
+            }
+        }
+    }
+
+    // Sync the Navigation Pane action state with the new setting.
+    if (m_navPaneAction)
+        m_navPaneAction->setChecked(s.viewing.showThumbnails);
+}
+
+// ---------------------------------------------------------------------------
+// Print
+// ---------------------------------------------------------------------------
+
+void SimplePdfWindow::printDocument()
+{
+#ifdef PDFVIEWER_HAS_PRINT
+    PdfTabWidget *tab = currentTab();
+    if (!tab || !tab->hasDocument())
+        return;
+
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintDialog dlg(&printer, this);
+    dlg.setWindowTitle(tr("Print Document"));
+    if (dlg.exec() != QDialog::Accepted)
+        return;
+
+    QPdfDocument *doc = tab->document();
+    const int pageCount = doc->pageCount();
+
+    // Determine page range from the dialog selection.
+    const int firstPage = (printer.printRange() == QPrinter::PageRange)
+                              ? printer.fromPage() - 1
+                              : 0;
+    const int lastPage  = (printer.printRange() == QPrinter::PageRange)
+                              ? qMin(printer.toPage() - 1, pageCount - 1)
+                              : pageCount - 1;
+
+    QPainter painter;
+    if (!painter.begin(&printer)) {
+        QMessageBox::warning(this, tr("Print"), tr("Could not start printing."));
+        return;
+    }
+
+    for (int page = firstPage; page <= lastPage; ++page) {
+        const QSizeF pageSizePt = doc->pagePointSize(page);
+        const QRect paintRect   = painter.viewport();
+
+        // Scale page to fill the printable area while preserving aspect ratio.
+        const double scaleX = paintRect.width()  / pageSizePt.width();
+        const double scaleY = paintRect.height() / pageSizePt.height();
+        const double scale  = qMin(scaleX, scaleY);
+
+        const QSize renderSize(
+            static_cast<int>(pageSizePt.width()  * scale),
+            static_cast<int>(pageSizePt.height() * scale));
+
+        const QImage pageImage = doc->render(page, renderSize);
+        if (!pageImage.isNull()) {
+            const int offsetX = (paintRect.width()  - renderSize.width())  / 2;
+            const int offsetY = (paintRect.height() - renderSize.height()) / 2;
+            painter.drawImage(offsetX, offsetY, pageImage);
+        }
+
+        if (page < lastPage)
+            printer.newPage();
+
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    }
+
+    painter.end();
+#endif
 }

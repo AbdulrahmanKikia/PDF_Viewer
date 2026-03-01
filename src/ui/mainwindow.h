@@ -82,14 +82,6 @@ private slots:
     void onMoveToTrash();
     void onShowInFolder();
 
-    // Signature menu (placeholders)
-    void onSignDocument();
-    void onAddSignatureField();
-    void onVerifySignatures();
-    void onRemoveSignature();
-    void onCertificateManager();
-    void onDigitalID();
-
     // Help menu
     void onGettingStarted();
     void onDocumentation();
@@ -121,7 +113,6 @@ private:
     void createEditMenu(QMenuBar *menuBar);
     void createViewMenu(QMenuBar *menuBar);
     void createToolsMenu(QMenuBar *menuBar);
-    void createSignatureMenu(QMenuBar *menuBar);
     void createHelpMenu(QMenuBar *menuBar);
 
     // Menu actions

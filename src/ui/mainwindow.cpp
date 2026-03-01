@@ -115,7 +115,6 @@ void MainWindow::createMenuBar()
     createEditMenu(menuBar);
     createViewMenu(menuBar);
     createToolsMenu(menuBar);
-    createSignatureMenu(menuBar);
     createHelpMenu(menuBar);
 }
 
@@ -294,24 +293,6 @@ void MainWindow::createToolsMenu(QMenuBar *menuBar)
     QAction* devRenderAct = toolsMenu->addAction(
         tr("Dev: Render Test…"), this, &MainWindow::onTestPdfRenderer);
     devRenderAct->setStatusTip(tr("Open the PDF renderer test harness (developer tool)"));
-}
-
-void MainWindow::createSignatureMenu(QMenuBar *menuBar)
-{
-    QMenu *signatureMenu = menuBar->addMenu(tr("&Signature"));
-
-    signatureMenu->addAction(tr("Sign Document"), this, &MainWindow::onSignDocument);
-    signatureMenu->addAction(tr("Add Signature Field"), this, &MainWindow::onAddSignatureField);
-
-    signatureMenu->addSeparator();
-
-    signatureMenu->addAction(tr("Verify Signatures"), this, &MainWindow::onVerifySignatures);
-    signatureMenu->addAction(tr("Remove Signature"), this, &MainWindow::onRemoveSignature);
-
-    signatureMenu->addSeparator();
-
-    signatureMenu->addAction(tr("Certificate Manager"), this, &MainWindow::onCertificateManager);
-    signatureMenu->addAction(tr("Digital ID"), this, &MainWindow::onDigitalID);
 }
 
 void MainWindow::createHelpMenu(QMenuBar *menuBar)
@@ -807,14 +788,6 @@ void MainWindow::onRename() {}
 void MainWindow::onDuplicate() {}
 void MainWindow::onMoveToTrash() {}
 void MainWindow::onShowInFolder() {}
-
-// Signature menu slots (placeholders)
-void MainWindow::onSignDocument() {}
-void MainWindow::onAddSignatureField() {}
-void MainWindow::onVerifySignatures() {}
-void MainWindow::onRemoveSignature() {}
-void MainWindow::onCertificateManager() {}
-void MainWindow::onDigitalID() {}
 
 // Help menu slots
 void MainWindow::onGettingStarted()

@@ -27,7 +27,7 @@ void PdfTabWidget::setupUi()
 
     m_view->setDocument(m_document);
     m_navigator = m_view->pageNavigator();
-    m_view->setPageMode(QPdfView::PageMode::MultiPage);
+    m_view->setPageMode(QPdfView::PageMode::SinglePage);
     m_view->setZoomMode(QPdfView::ZoomMode::FitInView);
     m_view->setSearchModel(m_searchModel);
 
