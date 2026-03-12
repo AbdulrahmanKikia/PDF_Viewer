@@ -60,7 +60,7 @@ endif()
 # -----------------------------------------------------------------------------
 # Qt6: required + optional modules
 # -----------------------------------------------------------------------------
-find_package(Qt6 6.10.2 REQUIRED COMPONENTS Core Gui Widgets Concurrent)
+find_package(Qt6 6.10.2 REQUIRED COMPONENTS Core Gui Widgets Concurrent Network)
 find_package(Qt6 6.10.2 QUIET COMPONENTS Svg Pdf PdfWidgets PrintSupport)
 
 # -----------------------------------------------------------------------------
@@ -217,6 +217,38 @@ qt_add_executable(PDFViewer
     src/config/settingsmanager.cpp
     ${PDFVIEWER_UI_SOURCES}
     ${PDF_BACKEND_SOURCES}
+)
+
+qt_add_executable(PDFViewerInstaller
+    installer/main.cpp
+    installer/InstallerConfig.h
+    installer/InstallerWizard.cpp
+    installer/InstallerWizard.h
+    installer/Downloader.cpp
+    installer/Downloader.h
+    installer/ZipExtractor.cpp
+    installer/ZipExtractor.h
+    installer/InstallActions.cpp
+    installer/InstallActions.h
+    installer/pages/WelcomePage.cpp
+    installer/pages/WelcomePage.h
+    installer/pages/LicensePage.cpp
+    installer/pages/LicensePage.h
+    installer/pages/InstallLocationPage.cpp
+    installer/pages/InstallLocationPage.h
+    installer/pages/DownloadPage.cpp
+    installer/pages/DownloadPage.h
+    installer/pages/InstallProgressPage.cpp
+    installer/pages/InstallProgressPage.h
+    installer/pages/FinishPage.cpp
+    installer/pages/FinishPage.h
+)
+
+target_link_libraries(PDFViewerInstaller PRIVATE
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets
+    Qt6::Network
 )
 
 target_include_directories(PDFViewer PRIVATE

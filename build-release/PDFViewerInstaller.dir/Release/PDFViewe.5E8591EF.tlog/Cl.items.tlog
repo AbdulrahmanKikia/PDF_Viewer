@@ -1,0 +1,12 @@
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\main.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\main.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\InstallerWizard.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\InstallerWizard.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\Downloader.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\Downloader.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\ZipExtractor.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\ZipExtractor.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\InstallActions.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\InstallActions.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\pages\WelcomePage.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\WelcomePage.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\pages\LicensePage.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\LicensePage.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\pages\InstallLocationPage.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\InstallLocationPage.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\pages\DownloadPage.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\DownloadPage.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\pages\InstallProgressPage.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\InstallProgressPage.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\installer\pages\FinishPage.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\FinishPage.obj
+C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller_autogen\mocs_compilation_Release.cpp;C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release\PDFViewerInstaller.dir\Release\mocs_compilation_Release.obj

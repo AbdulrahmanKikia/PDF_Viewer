@@ -1,0 +1,10 @@
+^C:\USERS\A_KIK.LAPTOP-I982K1HH\CODE\PDF_VIEWER\BUILD-RELEASE\CMAKEFILES\108BEBA8AA0328B52E7F9BCAD25C3FE0\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer -BC:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-release --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-release/PDFViewer.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,34 @@
+^C:\USERS\A_KIK.LAPTOP-I982K1HH\CODE\PDF_VIEWER\BUILD-RELEASE\CMAKEFILES\B86A071413448ECC6FF0AD0D11FDB83C\QRC_APP_RESOURCES.CPP.RULE
+setlocal
+C:\Qt\6.10.2\msvc2022_64\bin\rcc.exe --output C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-release/.qt/rcc/qrc_app_resources.cpp --name app_resources C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-release/.qt/rcc/app_resources.qrc --no-zstd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\A_KIK.LAPTOP-I982K1HH\CODE\PDF_VIEWER\BUILD-RELEASE\CMAKEFILES\AC7AB1907E30A0708182236AA2AF3B71\QRC_RESOURCES.CPP.RULE
+setlocal
+cd C:\Users\a_kik.LAPTOP-I982K1HH\Code\PDF_Viewer\build-release
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_autorcc C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-release/CMakeFiles/PDFViewer_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Info.json Release
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\A_KIK.LAPTOP-I982K1HH\CODE\PDF_VIEWER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer -BC:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-release --check-stamp-file C:/Users/a_kik.LAPTOP-I982K1HH/Code/PDF_Viewer/build-release/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
